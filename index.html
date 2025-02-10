@@ -1,1 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习平台 - 登录</title>
+</head>
+<body>
+    <h2>欢迎来到学习平台</h2>
+    <button onclick="loginWithGitHub()">使用 GitHub 登录</button>
 
+    <script>
+        function loginWithGitHub() {
+            const client_id = "Ov23liMhd6CDcvqqUn4B";  // 替换为你的 Client ID
+            const redirect_uri = "https://oscartanwenlong-hi.github.io/class/callback.html";  // 替换为你的 GitHub Pages 网址
+            window.location.href = `https://github.com/login/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}`;
+        }
+    </script>
+</body>
+</html>
