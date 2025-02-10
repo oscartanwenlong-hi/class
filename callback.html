@@ -1,18 +1,49 @@
-<script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub 登录回调</title>
+</head>
+<body>
+    <h2>正在登录，请稍候...</h2>
 
-    if (code) {
-        fetch(`https://github.com/login/oauth/access_token?client_id=你的GitHub应用ID&client_secret=你的GitHub应用Secret&code=${code}`, {
-            method: "POST",
-            headers: { "Accept": "application/json" }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.access_token) {
-                localStorage.setItem("github_token", data.access_token);
-                window.location.href = "dashboard.html"; 
-            }
-        });
-    }
-</script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get("code");
+
+        if (code) {
+            fetch("https://github.com/login/oauth/access_token", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    client_id: "Ov23liMhd6CDcvqqUn4B",
+                    client_secret: "784fc98f59bfc04a8e6da0c3b73754f3c7389869",
+                    code: code
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.access_token) {
+                    localStorage.setItem("github_token", data.access_token);
+                    window.location.href = "dashboard.html"; // 登录成功后跳转
+                } else {
+                    alert("登录失败，请重试！");
+                    window.location.href = "index.html"; // 失败回到首页
+                }
+            })
+            .catch(error => {
+                console.error("GitHub 登录错误:", error);
+                alert("登录出错，请检查控制台！");
+                window.location.href = "index.html";
+            });
+        } else {
+            alert("未获取到 GitHub 授权码！");
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>
